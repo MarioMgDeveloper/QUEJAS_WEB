@@ -1,0 +1,100 @@
+﻿@model ClsRegistroQueja
+@{
+    ViewData["Title"] = "Registrar";
+
+}
+
+<div class="container-fluid m-1">
+    <div class="row">
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show w-100" role="alert">
+                @ViewBag.Error
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        }
+
+        @if (ViewBag.Exito != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show w-100" role="alert">
+                @ViewBag.Exito
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        }
+    </div>
+    <br />
+    @using (Html.BeginForm("GuardarQueja", "Quejas", null, FormMethod.Post, true, new { @id = "FrmQueja" }))//Form
+    {
+        <div asp-validation-summary="ModelOnly"></div>
+        @Html.HiddenFor(x => x.IdComercio, new { @id = "IdComercio" })
+        @Html.HiddenFor(x => x.TextoComercioSeleccionado, new { @id = "DescComercioSeleccionado" })
+        <div class="form-row">
+            <h3>¿En dónde se encuentra el comercio al que va dirigirá su queja?</h3>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6 col-12">
+                <label asp-for="@Model.IdDepartamento"></label>
+                @Html.DropDownListFor(x => x.IdDepartamento, ViewBag.ListaDepartamentos as SelectList, "Seleccione", new
+           {
+               @id = "ddlDepartamento",
+               @class = "form-control",
+               @onchange = " FillMunicipios('#ddlDepartamento', '#ddlMunicipio', " + "'" + Model.IdMunicipio + "'),BuscarComercios('#ddlDepartamento', '#ddlMunicipio', 'TxtBusqueda', '#ComerciosContainer'), LimpiarSeleccionComercio()"
+           })
+
+            </div>
+            <div class="form-group col-md-6 col-12">
+                <label asp-for="@Model.IdMunicipio"></label>
+                @Html.DropDownListFor(x => x.IdMunicipio, new SelectList(""), new { @id = "ddlMunicipio", @class = "form-control", @onchange = "BuscarComercios('#ddlDepartamento', '#ddlMunicipio', 'TxtBusqueda', '#ComerciosContainer'), LimpiarSeleccionComercio()" })
+            </div>
+            <div class="form-group col-12">
+                <input asp-for="@Model.NombreBusqueda" id="TxtBusqueda" class="form-control" onkeyup="BuscarComercios('#ddlDepartamento', '#ddlMunicipio', 'TxtBusqueda', '#ComerciosContainer'),LimpiarSeleccionComercio()" />
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <label class="font-weight-bold" id="LblComercioSelecionado" style="font-size:larger">@Model.TextoComercioSeleccionado</label>
+        </div>
+
+        <div class="row d-flex justify-content-center">
+            <span asp-validation-for="@Model.IdComercio" class="text-danger " style="font-size: large"></span>
+        </div>
+        <div class="form-row w-100 overflow-auto d-flex justify-content-center" id="ComerciosContainer">
+
+        </div>
+        <br />
+        <br />
+        <div class="form-row">
+            <div class="form-group">
+                <label asp-for="@Model.IdTipoQueja"></label>
+                @Html.DropDownListFor(x => x.IdTipoQueja, ViewBag.Categoria as SelectList, "Seleccione", new
+        {
+            @id = "ddlTipo",
+            @class = "form-control"
+                })
+                <span asp-validation-for="@Model.IdTipoQueja" class="text-danger " style="font-size: large"></span>
+            </div>
+        </div>
+        <div class="row m-1">
+            <label asp-for="@Model.DescripcionQueja"></label>
+            @Html.TextAreaFor(x => x.DescripcionQueja, 5, 20, new { @class = "form-control", @placeholder = "Ingrese su queja aquí", @maxlength = "500" })
+            <span asp-validation-for="@Model.DescripcionQueja" class="text-danger"></span>
+        </div>
+
+        <div class="form-row mt-3">
+            <input type="submit" value="Enviar" class="btn btn-primary" />
+        </div>
+    }
+</div>
+
+<script>
+    $(document).ready(
+        FillMunicipios('#ddlDepartamento', '#ddlMunicipio', '@Model.IdMunicipio'),
+        BuscarComercios('#ddlDepartamento', '#ddlMunicipio', 'TxtBusqueda', '#ComerciosContainer')
+    );
+</script>
+

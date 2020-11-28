@@ -1,0 +1,18 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<option value="0">Seleccione</option>
+
+@foreach (var item in ViewBag.ListMunicipios)
+{
+
+    if (item.Value == ViewBag.Selected)
+    {
+        <option value="@item.Value" selected="selected">@item.Text</option>
+    }
+    else
+    {
+        <option value="@item.Value">@item.Text</option>
+    }
+}

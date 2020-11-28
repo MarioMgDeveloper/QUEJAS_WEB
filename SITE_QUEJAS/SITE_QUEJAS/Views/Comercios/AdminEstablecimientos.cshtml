@@ -1,0 +1,98 @@
+﻿@model ClsCreateEstablecimiento
+@{
+    AdminSession sesion = new AdminSession(Context);
+    int IdSelect = sesion.GetString(VariablesDeSession.IdEmpresa) != null ? int.Parse(sesion.GetString(VariablesDeSession.IdEmpresa)) : 0;
+}
+
+<div class="container-fluid mr-1 ml-1">
+
+    <div class="row text-center w-100 d-flex justify-content-center">
+        <h2> Establecimientos</h2>
+    </div>
+    <div class="row text-center w-100 d-flex justify-content-center">
+        <a asp-controller="Comercios" asp-action="RegistrarComercios" class="fas fa-chevron-circle-left fa-2x text-success"></a>
+    </div>
+    @if (ViewBag.Error != null)
+    {
+        <div class="row">
+            <div class="alert alert-danger alert-dismissible fade show w-100" role="alert">
+                @ViewBag.Error
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    }
+    @if (ViewBag.Exito != null)
+    {
+        <div class="row">
+            <div class="alert alert-success alert-dismissible fade show w-100" role="alert">
+                @ViewBag.Exito
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    }
+    @using (Html.BeginForm("GuardarEstablecimiento", "Comercios", null, FormMethod.Post, true, new { @id = "FrmEst" }))
+    {
+        <div asp-validation-summary="ModelOnly"></div>
+        @Html.HiddenFor(x => x.Establecimiento.IdEstablecimiento, new { @id = "TxtIdEstab" })
+        <div class="container-fluid">
+            <div class="form-row">
+                <div class="form-group col-md-6 col-12">
+                    <label asp-for="@Model.Establecimiento.NombreComplementario"></label>
+                    <input asp-for="@Model.Establecimiento.NombreComplementario" class="form-control" id="TxtNombreEstablecimiento" />
+                    <span asp-validation-for="@Model.Establecimiento.NombreComplementario" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6 col-12">
+                    <label asp-for="@Model.Establecimiento.Direccion"></label>
+                    <input asp-for="@Model.Establecimiento.Direccion" class="form-control" id="TxtDireccionEstab" />
+                    <span asp-validation-for="@Model.Establecimiento.Direccion" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6 col-12">
+                    <label asp-for="@Model.IdDepartamento"></label>
+                    @Html.DropDownListFor(x => x.IdDepartamento, ViewBag.ListaDepartamentos as SelectList, "Seleccione", new
+               {
+                   @id = "ddlDeptoEstablecimiento",
+                   @class = "form-control",
+                   @onchange = " FillMunicipios('#ddlDeptoEstablecimiento', '#ddlMunicipioEstablecimiento', " + "'" + Model.Establecimiento.IdMunicipio + "')"
+               })
+                </div>
+                <div class="form-group col-md-6 col-12">
+                    <label asp-for="@Model.Establecimiento.IdMunicipio"></label>
+                    @Html.DropDownListFor(x => x.Establecimiento.IdMunicipio, new SelectList(""), new { @id = "ddlMunicipioEstablecimiento", @class = "form-control", @onchange = "" })
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6 col-12">
+                    <label asp-for="@Model.Establecimiento.PatenteComercio"></label>
+                    <input asp-for="@Model.Establecimiento.PatenteComercio" class="form-control" id="TxtPatente" />
+                    <span asp-validation-for="@Model.Establecimiento.PatenteComercio" class="text-danger"></span>
+                </div>
+                <div class="form-group col-12 col-md-6">
+                    <label asp-for="@Model.Establecimiento.IdEstado"></label>
+                    @Html.DropDownListFor(x => x.Establecimiento.IdEstado, ViewBag.ListEstados as SelectList, "Seleccione", new { @id = "ddlEstadoEstablecimiento", @class = "form-control" })
+                    <span asp-validation-for="@Model.Establecimiento.IdEstado" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row d-flex justify-content-center">
+            <input type="submit" value="Guardar" class="btn btn-outline-primary" />
+        </div>
+    }
+    <br />
+    <div  id="ListEstab" class="overflow-auto">
+
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(
+        ListarEstablecimientos('#ListEstab', '@IdSelect')
+    );
+</script>

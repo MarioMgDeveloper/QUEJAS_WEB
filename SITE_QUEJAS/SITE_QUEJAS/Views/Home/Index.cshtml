@@ -1,0 +1,64 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="owl-carousel">
+    <div class="slide slide-1">
+        @*<div class="slide-content">
+            <h1>¿Quieres registrar una queja?</h1>
+            <p>No te quedes callado, ¡Denúncialo!</p>
+            <button class="btn btn-outline-light">Ir</button>
+        </div>*@
+    </div>
+    <div class="slide slide-2">
+        @*<div class="slide-content">
+            <h1>Consultar queja</h1>
+            <p>Verifica si tu queja fue atendida.</p>
+            <button class="btn btn-outline-light">Ir</button>
+        </div>*@
+    </div>
+    <div class="slide slide-3">
+        @*<div class="slide-content">
+            <h1>¿Quieres registrar una queja?</h1>
+            <p>No te quedes callado, ¡Denúncialo!</p>
+            <button class="btn btn-outline-light">Ir</button>
+        </div>*@
+    </div>
+    <div class="slide slide-4">
+        @*<div class="slide-content">
+            <h1>Consultar queja</h1>
+            <p>Verifica si tu queja fue atendida.</p>
+            <button class="btn btn-outline-light">Ir</button>
+        </div>*@
+    </div>
+</div>
+
+<section class="section-cards" style="margin-top: -350px">
+    @*<div class="container-fluid text-center mt-2">
+        <h2>Registra tu mismo una <span>QUEJA</span></h2>
+    </div>*@
+    <div class="custom-card">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <div class="contenido">
+            <h2>01</h2>
+            <h3>NUEVA QUEJA</h3>
+            <p></p>
+            <a asp-action="Registrar" asp-controller="Quejas" class="btn btn-outline-light">Ver</a>
+        </div>
+    </div>
+    <div class="custom-card">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <div class="contenido">
+            <h2>02</h2>
+            <h3>BUSCAR QUEJA</h3>
+            <p></p>
+            <a asp-action="BuscarQueja" asp-controller="Quejas" class="btn btn-outline-light">Ver</a>
+        </div>
+    </div>
+</section>

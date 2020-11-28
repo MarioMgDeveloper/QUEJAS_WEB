@@ -1,0 +1,64 @@
+﻿@{
+    List<ClsInfoSucursales> lista = null;
+
+    if (ViewBag.Lista != null)
+    {
+        lista = (List<ClsInfoSucursales>)ViewBag.Lista;
+    }
+}
+
+
+<div class="container-fluid">
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Error
+        </div>
+    }
+    @if (lista != null)
+    {
+        if (lista.Count > 0)
+        {
+            <table class="table table-bordered table-sm" style="min-width:1000px">
+                <thead class="thead-light">
+                    <tr class="table-dark">
+                        <th scope="col">#</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Ubicación</th>
+                        <th scope="col">Dirección</th>
+                        <th scope="col">Patente</th>
+                        <th scope="col">Estado</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < lista.Count; i++)
+                    {
+                    <tr>
+                        <th scope="row">@(i+1)</th>
+                        <td>@lista[i].Nombre</td>
+                        <td>@lista[i].Ubicacion</td>
+                        <td>@lista[i].Direccion</td>
+                        <td>@lista[i].Patente</td>
+                        <td>@(lista[i].IdEstado==1?"ACTIVO":"INACTIVO")</td>
+                        <td><i class="fas fa-edit text-primary" style="cursor:pointer" onclick="CargarEstablecimientoDetalle('@lista[i].IdSucursal', '@lista[i].Nombre', '@lista[i].Direccion', '@lista[i].IdDepartamento', '@lista[i].IdMunicipio', '@lista[i].Patente', '@lista[i].IdEstado')"></i></td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="alert alert-warning" role="alert">
+                Sin establecimientos asociados
+            </div>
+        }
+    }
+    else
+    {
+        <div class="alert alert-warning" role="alert">
+            Sin establecimientos asociados
+        </div>
+    }
+
+</div>

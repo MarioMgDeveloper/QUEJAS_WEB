@@ -1,0 +1,59 @@
+﻿@model ClsFiltrosInformesQuejas
+@{
+    ViewData["Title"] = "Informes";
+}
+
+<div class="row d-flex justify-content-center">
+    <h1>@ViewData["Title"]</h1>
+
+</div>
+<div class="container-fluid">
+    <div class="form-row">
+        <div class="form-group col-md-6 col-12">
+            <label asp-for="@Model.IdRegion"></label>
+            @Html.DropDownListFor(x => x.IdRegion, ViewBag.ListRegion as SelectList, "Seleccione", new { @id = "ddlRegion", @class = "form-control", @onchange = "FillDepartamentos('#ddlRegion','#ddlDepartamento'" + Model.IdDepartamento + "), FillMunicipios('#ddlDepartamento', '#ddlMunicipio', " + "'" + Model.IdMunicipio + "','1'), Buscar()" })
+        </div>
+        <div class="form-group col-md-6 col-12">
+            <label asp-for="@Model.IdDepartamento"></label>
+            @Html.DropDownListFor(x => x.IdDepartamento, new SelectList(""), new { @id = "ddlDepartamento", @class = "form-control", @onchange = "FillMunicipios('#ddlDepartamento', '#ddlMunicipio', " + "'" + Model.IdMunicipio + "','0'), Buscar()" })
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6 col-12">
+            <label asp-for="@Model.IdMunicipio"></label>
+            @Html.DropDownListFor(x => x.IdMunicipio, new SelectList(""), new { @id = "ddlMunicipio", @class = "form-control", @onchange= " Buscar()" })
+        </div>
+        <div class="form-group col-md-6 col-12">
+            <label asp-for="@Model.IdEstado"></label>
+            @Html.DropDownListFor(x => x.IdEstado, ViewBag.ListEstados as SelectList, "Seleccione", new { @id = "ddlEstado", @class = "form-control", @onchange= " Buscar()" })
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6 col-12">
+            <label asp-for="@Model.Del"></label>
+            <input asp-for="@Model.Del" class="form-control" id="Del" onchange=" Buscar()" />
+        </div>
+        <div class="form-group col-md-6 col-12">
+            <label asp-for="@Model.Al"></label>
+            <input asp-for="@Model.Al" class="form-control" id="Al" onchange=" Buscar()" />
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-12">
+            <input asp-for="@Model.Nombrecomercio" class="form-control" id="TxtBusqueda" onkeyup=" Buscar()" />
+        </div>
+    </div>
+    <div class="container-fluid" id="ContainerTable">
+
+    </div>
+    <div class="form-row">
+        <a asp-controller="Reportes" asp-action="DescargarReporte" class="far fa-file-excel text-success fa-3x"></a>
+    </div>
+</div>
+
+<script>
+    function Buscar() {
+        BuscarQuejas('#ddlRegion', '#ddlDepartamento', '#ddlMunicipio', '#ddlEstado', '#Del', '#Al', '#TxtBusqueda','#ContainerTable');
+    }
+</script>
+

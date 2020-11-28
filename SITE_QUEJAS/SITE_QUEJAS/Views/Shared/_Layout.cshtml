@@ -1,0 +1,119 @@
+﻿@{
+    AdminSession session = new AdminSession(Context);
+    var InfoUsuario = session.GetObject<ClsInfoUsuario>(VariablesDeSession.InfoUsuario);
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SITE_QUEJAS</title>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/css/datatables.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css" integrity="sha512-OTcub78R3msOCtY3Tc6FzeDJ8N9qvQn1Ph49ou13xgA9VsH9+LRxoFU6EqLhW4+PKRfU+/HReXmSZXHEkpYoOA==" crossorigin="anonymous" />
+    <script src="https://kit.fontawesome.com/b79d5de2bb.js" crossorigin="anonymous"></script>
+
+
+
+    @* ---scripts--- *@
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/Comercios/Comercio.js"></script>
+    <script src="~/js/Quejas/Quejas.js"></script>
+    <script src="~/js/datatables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw==" crossorigin="anonymous"></script>
+
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light sombra-nav" style="background:#f1bd6a">
+            <div>
+                <a asp-controller="Home" asp-action="Index">
+                    <img src="~/img/logo.png" alt="error" height="75px" />
+                </a>
+            </div>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link link-menu" asp-controller="Quejas" asp-action="Registrar">Quejas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link link-menu" asp-controller="Quejas" asp-action="BuscarQueja">Buscar Queja</a>
+                    </li>
+                    @if (InfoUsuario != null)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link link-menu" asp-controller="Quejas" asp-action="AtenderQueja">Atender quejas</a>
+                        </li>
+                        if (InfoUsuario.IdRol == 1)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link link-menu" asp-controller="Comercios" asp-action="RegistrarComercios">Comercios</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link link-menu" asp-controller="Reportes" asp-action="ReporteQuejas">Reportes</a>
+                            </li>
+                        }
+                    }
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    @if (InfoUsuario != null)
+                    {
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-outline-light dropdown-toggle" data-toggle="dropdown">
+                                @InfoUsuario.Nombre
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-lg-right dropdown-menu-md-left">
+                                <a class="dropdown-item" href="#">@("Correo: "+InfoUsuario.Correo)</a>
+                                <a class="dropdown-item" href="#">@("Rol: " + InfoUsuario.NombreRol)</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="nav-link" asp-controller="Account" asp-action="Salir">Salir</a>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <a class="nav-link  link-menu"  asp-controller="Account" asp-action="Login">Ingresar</a>
+                    }
+                </form>
+            </div>
+        </nav>
+    </header>
+    <div class="container-fluid m-0 p-0">
+        <main role="main" class=" container-fluid m-0 p-0">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2020 - SITE_QUEJAS - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+
+    <script>
+        $(document).ready(function () {
+            $(".owl-carousel").owlCarousel({
+                items: 1,
+                loop: true,
+                nav: true,
+                dots: true,
+                autoplay: true,
+                autoplaySpeed: 1000,
+                smartSpeed: 1500,
+                autoplayHoverPause: true
+            });
+        });
+    </script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,56 @@
+﻿@{
+    List<ClsInfoInformQuejas> quejas = new List<ClsInfoInformQuejas>();
+
+    if (ViewBag.Lista != null)
+    {
+        quejas = (List<ClsInfoInformQuejas>)ViewBag.Lista;
+    }
+}
+
+
+@if (ViewBag.Error == null)
+{
+    if (quejas.Count > 0)
+    {
+        <label class="font-weight-bold text-primary">@quejas.Count queja(s) relacionada(s) con la búsqueda</label>
+        <table class="table  table-sm w-100" id="TablaQuejas">
+            <thead>
+                <tr class="table-dark">
+                    <th scope="col">#</th>
+                    <th scope="col">Comercio</th>
+                    <th scope="col">Región</th>
+                    <th scope="col">Ubicación</th>
+                    <th scope="col">Dirección</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Registrada el</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < quejas.Count; i++)
+                {
+                <tr>
+                    <th scope="row">@(i+1)</th>
+                    <td>@quejas[i].Empresa</td>
+                    <td>@quejas[i].Region</td>
+                    <td>@quejas[i].Ubicacion</td>
+                    <td>@quejas[i].Direccion</td>
+                    <td>@quejas[i].Estado</td>
+                    <td>@quejas[i].FechaCreacion</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-warning w-100" role="alert">
+            La búsqueda no generó resultados.
+        </div>
+    }
+}
+else
+{
+    <div class="alert alert-danger w-100" role="alert">
+        @ViewBag.Error
+    </div>
+}

@@ -1,0 +1,86 @@
+﻿
+@{
+    List<ClsInfoSucursales> comercios = new List<ClsInfoSucursales>();
+
+    if (ViewBag.LisComercios != null)
+    {
+        comercios = (List<ClsInfoSucursales>)ViewBag.LisComercios;
+    }
+}
+
+
+@if (comercios != null)
+{
+    if (comercios.Count > 0)
+    {
+        <table class="table table-bordered table-sm" style="min-width:1000px" id="TablaComercios">
+            <thead class="thead-light">
+                <tr class="table-dark">
+                    <th scope="col">#</th>
+                    <th scope="col">Comercio</th>
+                    <th scope="col">Ubicación</th>
+                    <th scope="col">Dirección</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < comercios.Count; i++)
+                {
+                    <tr>
+                        <th scope="row">@(i+1)</th>
+                        <td>@comercios[i].Nombre</td>
+                        <td>@comercios[i].Ubicacion</td>
+                        <td>@comercios[i].Direccion</td>
+                        <td><a href="#" onclick="SetIdComercio('@comercios[i].IdSucursal', '@comercios[i].Nombre')">Elegir</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-warning w-100" role="alert">
+            La búsqueda no generó resultados.
+        </div>
+    }
+}
+else
+{
+    <div class="alert alert-warning w-100" role="alert">
+        La búsqueda no generó resultados.
+    </div>
+}
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger w-100" role="alert">
+        @ViewBag.Error
+    </div>
+}
+
+<div class="container-fluid" id="pg"></div>
+
+<script>
+    $(document).ready(
+        $('#TablaComercios').DataTable({
+            "aLengthMenu": [[5, 10, 15, 20, -1], [5, 10, 15, 20, "All"]],
+            "iDisplayLength": 5,
+            "searching": false,
+            "scrollX": false,
+            "info": false,
+            "language": {
+                "lengthMenu": "_MENU_ Cantidad Visible",
+                "zeroRecords": "No existen registros",
+                "info": "Viendo _PAGE_ de _PAGES_",
+                "infoEmpty": "No estan disponibles los resultados",
+                "infoFiltered": "(filtered from _MAX_ total records)"
+            }
+
+        })
+    );
+    function SetIdComercio(id, nombre) {
+        $("#IdComercio").val(id);
+        $("#DescComercioSeleccionado").val("Queja dirijada a: " + nombre);
+        document.getElementById('LblComercioSelecionado').innerHTML = "Queja dirijada a: " + nombre;
+    }
+</script>

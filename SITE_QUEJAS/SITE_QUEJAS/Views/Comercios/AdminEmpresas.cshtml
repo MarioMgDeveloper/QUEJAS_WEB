@@ -1,0 +1,56 @@
+﻿@{
+    List<TbEmpresa> list = null;
+    if (ViewBag.Lista != null)
+    {
+        list = (List<TbEmpresa>)ViewBag.Lista;
+    }
+}
+
+
+@if (list != null)
+{
+    if (list.Count > 0)
+    {
+        <table class="table table-bordered table-sm" style="min-width:1000px">
+            <thead class="thead-light">
+                <tr class="table-dark">
+                    <th scope="col">#</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Dirección Fiscal</th>
+                    <th scope="col">Nit</th>
+                    <th scope="col">Estado</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < list.Count; i++)
+                {
+                    <tr>
+                        <th scope="row">@(i+1)</th>
+                        <td>@list[i].NombreEmpresa</td>
+                        <td>@list[i].DireccionFiscal</td>
+                        <td>@list[i].Nit</td>
+                        <td>@(list[i].IdEstado==1?"ACITVO":"INACTIVO")</td>
+                        <td><i class="fas fa-edit text-primary" style="cursor:pointer" onclick="SetEmpresaSelect('@list[i].IdEmpresa', '@list[i].NombreEmpresa', '@list[i].DireccionFiscal', '@list[i].Nit', '@list[i].IdEstado')"></i></td>
+                        <td><a asp-controller="Comercios" asp-action="AdminEstablecimientos" asp-route-IdEmpresa="@list[i].IdEmpresa" class="fas fa-eye text-warning" ></a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-warning w-100" role="alert">
+            No se encontraron empresas.
+        </div>
+    }
+
+    @if (ViewBag.Error != null)
+    {
+        <br />
+        <div class="alert alert-danger w-100" role="alert">
+            @ViewBag.Error
+        </div>
+    }
+}

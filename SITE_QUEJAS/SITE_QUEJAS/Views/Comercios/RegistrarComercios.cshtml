@@ -1,0 +1,87 @@
+﻿@model ClsCreateEmpresa
+@{
+    ViewData["Title"] = "Administrar Empresas";
+}
+
+
+<div class="container-fluid-w-100 m-3">
+    <div class="row d-flex justify-content-center">
+        <h1>@ViewData["Title"]</h1>
+    </div>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="row m-3">
+            <div class="alert alert-danger alert-dismissible fade show w-100" role="alert">
+                @ViewBag.Error
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    }
+
+    @if (ViewBag.Exito != null)
+    {
+        <div class="row m-3">
+            <div class="alert alert-success alert-success fade show  w-100" role="alert">
+                @ViewBag.Exito
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    }
+
+    <br />
+
+    @using (Html.BeginForm("GuardarEmpresa", "Comercios", null, FormMethod.Post, true, new { @id = "FrmEmpresa" }))
+    {
+        <div asp-validation-summary="ModelOnly"></div>
+        @Html.HiddenFor(x => x.Empresa.IdEmpresa, new { @id = "TxtIdEmp" })
+        <div class="form-row">
+            <div class="form-group col-12 col-md-6">
+                <label asp-for="@Model.Empresa.NombreEmpresa"></label>
+                <input asp-for="@Model.Empresa.NombreEmpresa" class="form-control" maxlength="150" id="TxtNombre" />
+                <span asp-validation-for="@Model.Empresa.NombreEmpresa" class="text-danger"></span>
+            </div>
+            <div class="form-group col-12 col-md-6">
+                <label asp-for="@Model.Empresa.DireccionFiscal"></label>
+                <input asp-for="@Model.Empresa.DireccionFiscal" class="form-control" maxlength="150" id="TxtDireccion" />
+                <span asp-validation-for="@Model.Empresa.DireccionFiscal" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-12 col-md-6">
+                <label asp-for="@Model.Empresa.Nit"></label>
+                <input asp-for="@Model.Empresa.Nit" class="form-control" maxlength="150" id="TxtNit" />
+                <span asp-validation-for="@Model.Empresa.Nit" class="text-danger"></span>
+            </div>
+            <div class="form-group col-12 col-md-6">
+                <label asp-for="@Model.Empresa.IdEstado"></label>
+                @Html.DropDownListFor(x => x.Empresa.IdEstado, ViewBag.ListEstados as SelectList, "Seleccione", new { @id = "ddlEstado", @class = "form-control" })
+                <span asp-validation-for="@Model.Empresa.IdEstado" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row d-flex justify-content-center">
+            <input type="submit" value="Guardar" class="btn btn-outline-primary" />
+        </div>
+        <br />
+
+        <div class="container-fluid" id="ContainerEmpresa">
+
+        </div>
+
+        <div class="container-fluid" id="Establecimientos">
+
+        </div>
+    }
+</div>
+<script>
+    $(document).ready(
+        CargarEmpresas('#ContainerEmpresa')
+    );
+</script>
+
+

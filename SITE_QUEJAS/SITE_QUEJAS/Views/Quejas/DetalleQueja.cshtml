@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewData["Title"] = "DetalleQueja";
+    DetalleQueja detalle = new DetalleQueja();
+    if (ViewBag.Detalle != null)
+    {
+        detalle = (DetalleQueja)ViewBag.Detalle;
+    }
+}
+
+<div class="container-fluid d-flex justify-content-center w-100 mb-3">
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            ViewBag.Error
+        </div>
+    }
+    else if (detalle.EstadoQueja == null)
+    {
+        <div class="alert alert-warning" role="alert">
+            No se enctro la queja solicitada.
+        </div>
+    }
+    else
+    {
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="~/img/img_info_queja.jpg" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Información</h5>
+                <p class="card-text">@detalle.Queja</p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">@detalle.Comercio @detalle.Ubicacion @detalle.Direccion</li>
+                <li class="list-group-item"><label><strong> Estado de la queja: </strong>    @detalle.EstadoQueja</label></li>
+                <li class="list-group-item"><strong>Resolución: </strong>@(detalle.Resolucion??"n/a")</li>
+            </ul>
+        </div>
+    }
+</div>

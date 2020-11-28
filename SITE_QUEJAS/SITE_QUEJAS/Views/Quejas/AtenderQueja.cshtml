@@ -1,0 +1,127 @@
+﻿@model List<ClsInfoInformQuejas>
+@{
+    ViewData["Title"] = "Quejas sin atender";
+}
+
+<div class="container-fluid mt-3">
+    <div class="row d-flex justify-content-center">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+    <br />
+    @if (ViewBag.Exito != null)
+    {
+        <div class="row ml-3 mr-3">
+            <div class="w-100 alert-success alert-dismissible fade show" role="alert">
+                <strong>@ViewBag.Exito </strong>  Queja(s) resuelta(s) correctamente.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+        <br />
+    }
+    @using (Html.BeginForm("ResolverQueja", "Quejas", null, FormMethod.Post, true, new { @id = "FrmQuejas" }))
+    {
+        @if (Model != null)
+        {
+            if (Model.Count > 0)
+            {
+                <div class="container-fluid overflow-auto">
+                    <table class="table table-bordered table-sm" style="min-width:1000px">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col"><input type="checkbox" id="CheckAll" onchange="CheckAllRows(@Model.Count)" /></th>
+                                <th scope="col" style="display:none"></th>
+                                <th scope="col">Establecimiento</th>
+                                <th scope="col">Ubicación</th>
+                                <th scope="col">Dirección</th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.Count; i++)
+                            {
+                                <tr>
+                                    <th scope="row"><input asp-for="@Model[i].check" id="@("Check"+i)" onchange="CheckRow(@i)" /></th>
+                                    <th scope="col" style="display:none"><input asp-for="@Model[i].IdQueja" /></th>
+                                    <td><input asp-for="@Model[i].Empresa" class="form-control" style="border:none; background:#fff" readonly="readonly" /></td>
+                                    <td><input asp-for="@Model[i].Ubicacion" class="form-control" style="border:none; background:#fff" readonly="readonly" /></td>
+                                    <td><input asp-for="@Model[i].Direccion" class="form-control" style="border:none; background:#fff" readonly="readonly" /></td>
+                                    @if (Model[i].check)
+                                    {
+                                        <td><input asp-for="@Model[i].DescripcioResuelve" id="@("TxtResuelve"+i)" class="form-control" /></td>
+                                    }
+                                    else
+                                    {
+                                        <td><input asp-for="@Model[i].DescripcioResuelve" id="@("TxtResuelve"+i)" class="form-control" disabled="disabled" /></td>
+                                    }
+                                    <td><i class="fas fa-info-circle text-info" style="cursor:pointer" onclick="VerDetalleQueja('@Model[i].Queja')"></i></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <br />
+                <div class="row w-100 d-flex justify-content-center">
+                    <input type="submit" value="Resolver" class="btn btn-outline-success" />
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-warning w-100" role="alert">
+                    No hay quejas por atender.
+                </div>
+            }
+        }
+        else
+        {
+            <div class="alert alert-warning w-100" role="alert">
+                No hay quejas por atender.
+            </div>
+        }
+    }
+
+
+    <div class="modal" tabindex="-1" id="ModalDetalle">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Detalle de la queja</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="TextoModal">Modal body text goes here.</p>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    function CheckAllRows(TotalItems) {
+        var checked = $("#CheckAll").is(":checked") ? true : false;
+        for (var i = 0; i < TotalItems; i++) {
+            $("#Check" + i).prop('checked', checked);
+            CheckRow(i);
+        }
+    }
+    function CheckRow(index) {
+        var checked = $("#Check" + index).is(":checked") ? "true" : "false";
+        var TxtResuelve = "#TxtResuelve" + index;
+        if (checked == "true") {
+            $(TxtResuelve).attr('disabled', false);
+        }
+        else {
+            $(TxtResuelve).attr('disabled', true);
+            $(TxtResuelve).val("");
+        }
+    }
+
+</script>
